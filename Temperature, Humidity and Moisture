@@ -1,0 +1,36 @@
+//Arduino code to integrate Temperature, Humidity and Moisture sensors into a single file
+
+//@VinaiDrt
+
+//Roger Federer is GOAT,
+//and so is Linkin Park..!
+
+#inmport<dht.h>    //DHT11 Library must be installed for the code to run
+
+const int tempPin = 0; //LM35 in Analog Pin 0
+const int moisPin = 1; //FC-28-D in Analog Pin 1
+const int dht11Pin = 6; //DHT11 in Digital Pin 6
+
+void setup(){
+  Serial.begin(9600); //BaudRate = 9600
+}
+
+void loop(){
+  int humOutput = dht.read11(dht11Pin); 
+  int tempOutput = analogRead(tempPin);
+  int moisOutput = analogRead(moisPin);
+  moisOutput = map(moisOutput, 550, 0, 0, 100); //Output of a moisture sensor is in terms of resistance.
+                                                //This needs to be mapped to Percentage figures.
+                                                //All resistance outputs are mapped to corresponding Percentage values
+                                                //Syntax - map(value,ResistanceUpperValue, ResistanceLowerValue, 
+                                                //....PercentageLowerValue, PercentageHigherValue);
+                                                //**This is because high resistance means lower moisture content**
+  delaymicroseconds(10);
+  Serial.print("Humidity Content (%) - ");
+  Serial.println(dht.humidity);
+  Serial.print("Temperature (*C) - ");
+  Serial.println(tempOutput);
+  Serial.print("Moisture Content (%) - ");
+  Serial.println(moisOutput);
+  delay(1000);
+}
