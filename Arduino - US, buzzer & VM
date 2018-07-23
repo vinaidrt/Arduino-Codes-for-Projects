@@ -1,0 +1,37 @@
+//Arduino code to integrate Ultrasonic, Buzzer and Vibration Motor onto a single platform
+
+//@VinaiDrt
+
+//Roger Federer rockkssss!
+//And so does Linkin Park....!
+
+const int trigPin = 6;
+const int echoPin = 7;
+const int buzzer = 8;
+const int motor = 9;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT); //Trigger of the US sensor sends out sound waves
+  pinMode(echoPin, INPUT); //Echo of the US sensor receives the waves
+}
+
+void loop(){
+  digitalWrite(trigPin, LOW);
+  delaymicroseconds(2);
+  digitalWrite(trigPin, HIGH); //Trig is activated for 10 microseconds
+  delaymicroseconds(10);
+  digitalWrite(trigPin, LOW); //Trig is OFF
+  int time_taken = pulseIn(echoPin, HIGH); //To calculate the duration it takes the Echo to 
+                                           //listen back to the sound previously emitted
+  int cms = time_taken*17000 //in cms //or use built-in f(n), microsecondsToCentimeters
+  Serial.print("Distance in cms: ");
+  Serial.print(cms);
+  //Turn on buzzer and vibration sensor if range surpasses threshold distance
+  if(cms>50){   //change threshold as per requirement)
+    tone(buzzer, 1000) //1KHz signal is sent out
+    digitalWrite(motor, HIGH);
+    delay(1000);
+    noTone(buzzer);
+    digitalWrite(motor, LOW);
+ }
